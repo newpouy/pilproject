@@ -1,0 +1,147 @@
+<%layout('../tmp_layout')%>
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Vote!!</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    태임
+                </div>
+                <div class="panel-body">
+                    <table>
+                        <tr>
+                            <td><img src="/images/thm.jpg"></td>
+                            <!--  -->
+                        </tr>
+                    </table>
+                </div>
+                <div class="panel-footer">
+                    <button id="research_1_obj_1" type='button' class='btn btn-danger btn-circle' onclick='vote(this.id)'><i class='fa fa-heart'></i></button>
+                    <p class='voteCount' style='display: inline'>1</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div id="my-bar-chart" style=""></div>
+        </div>
+        <!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    예원
+                </div>
+                <div class="panel-body">
+                    <img src="/images/yewon.jpg">
+                </div>
+                <div class="panel-footer">
+                    <button id="research_1_obj_2" type='button' class='btn btn-danger btn-circle' onclick='vote(this.id)'><i class='fa fa-heart'></i></button>
+                    <p class='voteCount' style='display: inline'>1</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr/>
+    <div id="research_2" class="row">
+        <div class="col-lg-4">
+            <div id="obj_1" class="panel panel-default">
+                <div class="panel-heading">
+                    부먹
+                </div>
+                <div class="panel-body">
+                    <img src="/images/bumuc.jpg">
+                </div>
+                <div class="panel-footer">
+                    <button  id="research_2_obj_1" type='button' class='btn btn-danger btn-circle' onclick='vote(this.id)'><i class='fa fa-heart'></i></button>
+                    <p class='voteCount' style='display: inline'>1</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div id="my-donut-chart" style=""></div>
+        </div>
+        <!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+            <div id="obj_2" class="panel panel-primary">
+                <div class="panel-heading">
+                    찍먹
+                </div>
+                <div class="panel-body">
+                    <img src="/images/zicmuc.jpg">
+                </div>
+                <div class="panel-footer">
+                    <button id="research_2_obj_2" type='button' class='btn btn-danger btn-circle' onclick='vote(this.id)'><i class='fa fa-heart'></i></button>
+                    <p class='voteCount' style='display: inline'>1</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+</div>
+<script src="/bower_components/morrisjs/morris.min.js"></script>
+<script src="/js/my-data.js"></script> 
+<script>
+    $(document).ready(function(){
+        $('#savebbs').click(function(){
+            $.post("/bbs/create"
+                  ,{content:$('#content').val()}
+                  ,function(result){
+                    getList();
+                  })
+        })
+        getList();
+    });
+</script>
+<script>
+function vote(id){
+    var jq_id = '#'+id;
+    var value = $(jq_id).siblings('.voteCount').text();
+    console.log(id, value);
+    var t_value = $('#research_1_obj_1').siblings('.voteCount').text();
+    var y_value = $('#research_1_obj_2').siblings('.voteCount').text(); 
+    if(id=='research_1_obj_1'){
+        t_value++;
+        $(jq_id).siblings('.voteCount').text(t_value);
+    }else{
+        y_value++;
+        $(jq_id).siblings('.voteCount').text(y_value);
+    }
+    reDrawChart(id, t_value, y_value);
+}
+function reDrawChart(id, t_value, y_value){
+    
+    $('#my-bar-chart').empty();
+    Morris.Bar({
+        element: 'my-bar-chart',
+        data: [{
+            y: '태임',
+            a: t_value
+        }, {
+            y: '예원',
+            a: y_value
+        }],
+        xkey: 'y',
+        ykeys: ['a'],
+        labels: ['Series A'],
+        hideHover: 'auto',
+        resize: true,
+        barColors: function (row, series, type) {
+            if (row.x == 0) {
+              console.dir(row);  
+              return '#d9534f';
+            }
+            else {
+              return '#337ab7';
+            }
+
+//['#d9534f','#337ab7']
+        }
+    });
+}
+</script>

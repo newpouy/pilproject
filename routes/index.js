@@ -4,7 +4,8 @@ module.exports = function(app, passport){
 	
 	 /* GET home page. */
 	app.get('/',isAuthenticated, function(req, res) {
-	   res.redirect('/readme');
+	   //res.redirect('/readme');
+	   res.redirect('/vote');
 	});
 
 	app.post('/login', passport.authenticate('login', {
@@ -138,11 +139,32 @@ module.exports = function(app, passport){
 			
 		})
 	});
+	//vote get
+	app.get('/vote',isAuthenticated, function(req, res) {
+	   res.render('template/vote', {});
+	});
+	//vote ajax process
+	app.post('/vote/update', function(req, res) {
+		// set the user's local credentials
+		var id = req.param('id');
+
+		Bbs.findById(id,function(err,bbs){
+			if (err){
+			  console.log('Error in Saving bbs: '+err);  
+			  res.send({"result":false});
+			}
+			bbs.vote +=1;	
+			bbs.save(function(){
+				res.send({"result":true});	
+			})
+			
+		})
+	});
 }
 	// As with any middleware it is quintessential to call next()
 	// if the user is authenticated
 	var isAuthenticated = function (req, res, next) {
-	  if (req.isAuthenticated())
+	  //if (req.isAuthenticated())
 	    return next();
 	  res.redirect('/login');
 	}
