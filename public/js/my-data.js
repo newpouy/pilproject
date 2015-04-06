@@ -27,14 +27,11 @@ $(function() {
     Morris.Donut({
         element: 'my-donut-chart',
         data: [{
-            label: "Download Sales",
-            value: 12
+            label: "부먹",
+            value: 1
         }, {
-            label: "In-Store Sales",
-            value: 30
-        }, {
-            label: "Mail-Order Sales",
-            value: 20
+            label: "찍먹",
+            value: 1
         }],
         resize: true
     });

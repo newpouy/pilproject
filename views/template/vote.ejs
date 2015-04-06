@@ -23,7 +23,7 @@
                     </table>
                 </div>
                 <div class="panel-footer">
-                    <button id="research_1_obj_1" type='button' class='btn btn-danger btn-circle' onclick='vote(this.id)'><i class='fa fa-heart'></i></button>
+                    <button id="research_1_obj_1" type='button' class='btn btn-danger btn-circle' onclick='voteBar(this.id)'><i class='fa fa-heart'></i></button>
                     <p class='voteCount' style='display: inline'>1</p>
                 </div>
             </div>
@@ -41,7 +41,7 @@
                     <img src="/images/yewon.jpg">
                 </div>
                 <div class="panel-footer">
-                    <button id="research_1_obj_2" type='button' class='btn btn-danger btn-circle' onclick='vote(this.id)'><i class='fa fa-heart'></i></button>
+                    <button id="research_1_obj_2" type='button' class='btn btn-danger btn-circle' onclick='voteBar(this.id)'><i class='fa fa-heart'></i></button>
                     <p class='voteCount' style='display: inline'>1</p>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                     <img src="/images/bumuc.jpg">
                 </div>
                 <div class="panel-footer">
-                    <button  id="research_2_obj_1" type='button' class='btn btn-danger btn-circle' onclick='vote(this.id)'><i class='fa fa-heart'></i></button>
+                    <button  id="research_2_obj_1" type='button' class='btn btn-danger btn-circle' onclick='voteDonut(this.id)'><i class='fa fa-heart'></i></button>
                     <p class='voteCount' style='display: inline'>1</p>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                     <img src="/images/zicmuc.jpg">
                 </div>
                 <div class="panel-footer">
-                    <button id="research_2_obj_2" type='button' class='btn btn-danger btn-circle' onclick='vote(this.id)'><i class='fa fa-heart'></i></button>
+                    <button id="research_2_obj_2" type='button' class='btn btn-danger btn-circle' onclick='voteDonut(this.id)'><i class='fa fa-heart'></i></button>
                     <p class='voteCount' style='display: inline'>1</p>
                 </div>
             </div>
@@ -99,7 +99,7 @@
     });
 </script>
 <script>
-function vote(id){
+function voteBar(id){
     var jq_id = '#'+id;
     var value = $(jq_id).siblings('.voteCount').text();
     console.log(id, value);
@@ -112,9 +112,9 @@ function vote(id){
         y_value++;
         $(jq_id).siblings('.voteCount').text(y_value);
     }
-    reDrawChart(id, t_value, y_value);
+    reDrawBarChart(id, t_value, y_value);
 }
-function reDrawChart(id, t_value, y_value){
+function reDrawBarChart(id, t_value, y_value){
     
     $('#my-bar-chart').empty();
     Morris.Bar({
@@ -142,6 +142,35 @@ function reDrawChart(id, t_value, y_value){
 
 //['#d9534f','#337ab7']
         }
+    });
+}
+function voteDonut(id){
+    var jq_id = '#'+id;
+    var value = $(jq_id).siblings('.voteCount').text();
+    console.log(id, value);
+    var a_value = $('#research_2_obj_1').siblings('.voteCount').text();
+    var b_value = $('#research_2_obj_2').siblings('.voteCount').text(); 
+    if(id=='research_2_obj_1'){
+        a_value++;
+        $(jq_id).siblings('.voteCount').text(a_value);
+    }else{
+        b_value++;
+        $(jq_id).siblings('.voteCount').text(b_value);
+    }
+    reDrawDonutChart(id, a_value, b_value);
+}
+function reDrawDonutChart(id, a_value, b_value){
+    $('#my-donut-chart').empty();
+    Morris.Donut({
+        element: 'my-donut-chart',
+        data: [{
+            label: "부먹",
+            value: a_value
+        }, {
+            label: "찍먹",
+            value: b_value
+        }],
+        resize: true
     });
 }
 </script>
